@@ -172,3 +172,47 @@ input[type=range] { position: absolute; inset: 0; width: 100%; opacity: 0; curso
 .footer-msg { font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
 .footer-msg span { color: var(--lime); }
 .footer-mono { font-family: 'Syne Mono', monospace; font-size: 10px; color: #666; }
+
+/* ─── BUTTERFLY EFFECT ─── */
+.butterfly-card {
+  background: var(--violet);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 4px 4px 0 var(--ink);
+  color: var(--white);
+  animation: fadeUp 0.6s ease 0.6s both;
+}
+.butterfly-header {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.butterfly-sub {
+  font-size: 12px; color: #E0D4FF;
+  margin-bottom: 20px; line-height: 1.5;
+}
+.butterfly-result {
+  padding: 16px;
+  border-radius: 10px;
+  border: 2px solid var(--ink);
+  transition: background 0.4s ease;
+}
+.butterfly-result.is-positive { background: var(--lime); }
+.butterfly-result.is-neutral { background: var(--marigold); }
+.butterfly-result.is-negative { background: var(--coral); }
+
+.butterfly-sim-title {
+  font-family: 'Syne Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--ink); text-transform: uppercase;
+}
+.butterfly-diff {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 9px; font-weight: 900;
+  background: var(--ink); color: var(--white);
+  padding: 4px 8px; border-radius: 999px;
+}

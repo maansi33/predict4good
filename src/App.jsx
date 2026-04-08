@@ -3,7 +3,7 @@ import './styles.css';
 
 import { score, getSmallStep, OUTCOMES } from "./utils/engine";
 import { Slider, DimBar, Squiggle, Star } from "./components/UIComponents";
-import { BreathingExercise, Journal, SmallStep } from "./components/Interventions";
+import { BreathingExercise, Journal, SmallStep, ButterflyEffect } from "./components/Interventions";
 
 export default function App() {
   const [sleep, setSleep] = useState(7);
@@ -68,7 +68,6 @@ export default function App() {
 
       <div className="hero">
         <div className="hero-text">
-          {/* FIX: Badge moved inside text flow so it doesn't overlap art */}
           {prevScore !== null && (
             <div className="history-badge">
               Last Score: {prevScore > 0 ? "+" : ""}{prevScore}
@@ -228,7 +227,11 @@ export default function App() {
 
               <div className="intervention-section">
                  <div className="section-heading">Course Correction</div>
-                 {result.s < 0 && <BreathingExercise />}
+                 
+                 {/* NEW: Butterfly Effect Component */}
+                 <ButterflyEffect habits={{ sleep, screenTime: screen, studyHours: study, exercise, mood, originalScore: result.s }} />
+
+                 <BreathingExercise />
                  <Journal />
               </div>
             </div>
