@@ -9,9 +9,9 @@
 
 We are all authors of our own futures, yet we write the most important chapters completely blind.  
 
-Every day, we navigate complex, grey areas of decision-making. We compromise on sleep, doomscroll for comfort, and promise ourselves we’ll do better tomorrow. Individually, these micro-choices feel harmless — but over time, they compound into burnout, declining mental health, and lost potential.  
+Every day, we navigate complex, grey areas of decision-making. We compromise on sleep, doomscroll for comfort, and promise ourselves we’ll do better tomorrow. Individually, these micro-choices feel harmless — but over time, they compound into burnout, declining mental health, and lost potential, and we don't even realise it.  
 
-The core issue is this: **the future is invisible.**  
+The core issue is: **the future is invisible.**  
 
 Traditional habit trackers only reflect the past. Without visibility into long-term consequences, it becomes incredibly difficult to stay motivated and make meaningful change.
 
