@@ -1,5 +1,6 @@
 export function score({ sleep, screenTime, studyHours, exercise, mood }) {
   let s = 0, energy = 0, focus = 0, discipline = 0, mental = 0;
+  
   if (sleep < 6) { s -= 2; energy -= 2; }
   else if (sleep >= 7) { s += 2; energy += 2; }
   

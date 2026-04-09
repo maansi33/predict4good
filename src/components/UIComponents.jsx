@@ -36,11 +36,37 @@ export function DimBar({ label, value }) {
   );
 }
 
+export function TrajectoryChart({ score }) {
+  // Simulates compounding based on habit score
+  const points = [];
+  let currentVal = 50; 
+  const growthFactor = score / 15; 
+
+  for (let i = 0; i <= 30; i++) {
+    points.push({ x: (i / 30) * 100, y: 100 - (currentVal + (i * growthFactor * 10)) });
+  }
+
+  const pathD = `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}`;
+  const strokeCol = score >= 3 ? "#22c55e" : score <= -3 ? "#FF5733" : "#FFB830";
+
+  return (
+    <div style={{ marginTop: '20px', marginBottom: '24px', padding: '16px', background: 'var(--white)', borderRadius: '12px', border: '2.5px solid var(--ink)', boxShadow: '4px 4px 0 var(--ink)' }}>
+      <div style={{ fontFamily: 'Unbounded', fontSize: '9px', fontWeight: 700, marginBottom: '12px', textTransform: 'uppercase', color: '#888' }}>
+        30-Day Trajectory Projection
+      </div>
+      <svg viewBox="0 0 100 100" style={{ width: '100%', height: '80px', overflow: 'visible' }}>
+        <line x1="0" y1="50" x2="100" y2="50" stroke="#ccc" strokeWidth="1.5" strokeDasharray="3" />
+        <path d={pathD} fill="none" stroke={strokeCol} strokeWidth="3" strokeLinecap="round" />
+        <circle cx="100" cy={points[30].y} r="4" fill="var(--ink)" />
+      </svg>
+    </div>
+  );
+}
+
 export function Squiggle({ style }) {
   return (
     <svg width="60" height="20" viewBox="0 0 60 20" style={{ position: "absolute", ...style }} fill="none">
-      <path d="M0 10 Q7.5 0 15 10 Q22.5 20 30 10 Q37.5 0 45 10 Q52.5 20 60 10"
-        stroke="#1A1614" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M0 10 Q7.5 0 15 10 Q22.5 20 30 10 Q37.5 0 45 10 Q52.5 20 60 10" stroke="#1A1614" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
@@ -52,8 +78,7 @@ export function Star({ style, color="#1A1614", size=20 }) {
     return `${size / 2 + r * Math.cos(a)},${size / 2 + r * Math.sin(a)}`;
   }).join(" ");
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
-      style={{ position: "absolute", ...style }}>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ position: "absolute", ...style }}>
       <polygon points={pts} fill={color} />
     </svg>
   );

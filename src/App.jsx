@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import './styles.css';
 
 import { score, getSmallStep, OUTCOMES } from "./utils/engine";
-import { Slider, DimBar, Squiggle, Star } from "./components/UIComponents";
-import { BreathingExercise, Journal, SmallStep, ButterflyEffect } from "./components/Interventions";
+import { Slider, DimBar, TrajectoryChart, Squiggle, Star } from "./components/UIComponents";
+import { BreathingExercise, Journal, SmallStep, ButterflyEffect, AudioMessage } from "./components/Interventions";
 
 export default function App() {
   const [sleep, setSleep] = useState(7);
@@ -21,14 +21,11 @@ export default function App() {
 
   useEffect(() => {
     const savedScore = localStorage.getItem("futureYou_prevScore");
-    if (savedScore !== null) {
-      setPrevScore(parseInt(savedScore));
-    }
+    if (savedScore !== null) setPrevScore(parseInt(savedScore));
   }, []);
 
   const { s, energy, focus, discipline, mental } = score({
-    sleep, screenTime: screen, studyHours: study,
-    exercise: exercise === "yes", mood: mood || "okay",
+    sleep, screenTime: screen, studyHours: study, exercise: exercise === "yes", mood: mood || "okay",
   });
   
   const outcomeKey = s >= 3 ? "positive" : s <= -3 ? "negative" : "neutral";
@@ -43,11 +40,7 @@ export default function App() {
     const smallStepText = getSmallStep({ sleep, screenTime: screen, studyHours: study, exercise, mood });
 
     setTimeout(() => {
-      setResult({ 
-        s, energy, focus, discipline, mental, 
-        outcome: OUTCOMES[outcomeKey],
-        step: smallStepText 
-      });
+      setResult({ s, energy, focus, discipline, mental, outcome: OUTCOMES[outcomeKey], step: smallStepText });
       setPrevScore(s); 
       setLoading(false);
       setTimeout(() => { setRevealed(true); rightRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100);
@@ -69,20 +62,14 @@ export default function App() {
       <div className="hero">
         <div className="hero-text">
           {prevScore !== null && (
-            <div className="history-badge">
-              Last Score: {prevScore > 0 ? "+" : ""}{prevScore}
-            </div>
+            <div className="history-badge">Last Score: {prevScore > 0 ? "+" : ""}{prevScore}</div>
           )}
-          
           <div className="hero-eyebrow">Habit Forecaster</div>
           <h1 className="hero-h1">
-            Future<br />
-            <span className="line2">You</span>
-            <span className="line3">.</span>
+            Future<br /><span className="line2">You</span><span className="line3">.</span>
           </h1>
           <p className="hero-sub">
-            Your daily habits are silently shaping who you'll be.<br />
-            Let's find out where you're headed in 30 days.
+            Your daily habits are silently shaping who you'll be.<br />Let's find out where you're headed in 30 days.
           </p>
         </div>
 
@@ -121,24 +108,15 @@ export default function App() {
         <div className="panel-left">
           <div className="panel-title"><span className="num">01</span> Present You — Input Habits</div>
 
-          <Slider icon="🌙" label="Sleep" value={sleep} min={0} max={10} unit="h"
-            onChange={setSleep} colorFn={v => v < 6 ? "red" : v >= 7 ? "green" : "yellow"} />
-
-          <Slider icon="📱" label="Screen Time" value={screen} min={0} max={12} unit="h"
-            onChange={setScreen} colorFn={v => v > 6 ? "red" : v <= 3 ? "green" : "yellow"} />
-
-          <Slider icon="📚" label="Study / Work" value={study} min={0} max={12} unit="h"
-            onChange={setStudy} colorFn={v => v >= 4 ? "green" : v >= 2 ? "yellow" : "neutral"} />
+          <Slider icon="🌙" label="Sleep" value={sleep} min={0} max={10} unit="h" onChange={setSleep} colorFn={v => v < 6 ? "red" : v >= 7 ? "green" : "yellow"} />
+          <Slider icon="📱" label="Screen Time" value={screen} min={0} max={12} unit="h" onChange={setScreen} colorFn={v => v > 6 ? "red" : v <= 3 ? "green" : "yellow"} />
+          <Slider icon="📚" label="Study / Work" value={study} min={0} max={12} unit="h" onChange={setStudy} colorFn={v => v >= 4 ? "green" : v >= 2 ? "yellow" : "neutral"} />
 
           <div className="field">
-            <div className="field-top">
-              <div className="field-label">🏃 Exercise Today?</div>
-            </div>
+            <div className="field-top"><div className="field-label">🏃 Exercise Today?</div></div>
             <div className="toggle-pair">
-              <button className={`tog ${exercise === "yes" ? "yes-on" : ""}`}
-                onClick={() => setExercise("yes")}><span>✓ Yes</span></button>
-              <button className={`tog ${exercise === "no" ? "no-on" : ""}`}
-                onClick={() => setExercise("no")}><span>✗ No</span></button>
+              <button className={`tog ${exercise === "yes" ? "yes-on" : ""}`} onClick={() => setExercise("yes")}><span>✓ Yes</span></button>
+              <button className={`tog ${exercise === "no" ? "no-on" : ""}`} onClick={() => setExercise("no")}><span>✗ No</span></button>
             </div>
           </div>
 
@@ -146,8 +124,7 @@ export default function App() {
             <div className="field-top"><div className="field-label">🧠 Current Mood</div></div>
             <div className="mood-grid">
               {[["😞","bad","Low"],["😐","okay","Okay"],["😊","good","Good"]].map(([em, val, lbl]) => (
-                <button key={val} className={`mood-tile ${mood === val ? `sel-${val}` : ""}`}
-                  onClick={() => setMood(val)}>
+                <button key={val} className={`mood-tile ${mood === val ? `sel-${val}` : ""}`} onClick={() => setMood(val)}>
                   <span className="emoji">{em}</span>{lbl}
                 </button>
               ))}
@@ -156,15 +133,10 @@ export default function App() {
 
           <div className="score-bar-wrap">
             <div className="score-track">
-              <div className="score-fill-bar"
-                style={{ width: `${scorePct}%`, background: scoreColors[outcomeKey] }} />
+              <div className="score-fill-bar" style={{ width: `${scorePct}%`, background: scoreColors[outcomeKey] }} />
             </div>
-            <div className="score-labels">
-              <span>Struggling</span><span>Thriving</span>
-            </div>
-            <div className="score-num" style={{ color: scoreColors[outcomeKey] }}>
-              {s > 0 ? "+" : ""}{s} pts
-            </div>
+            <div className="score-labels"><span>Struggling</span><span>Thriving</span></div>
+            <div className="score-num" style={{ color: scoreColors[outcomeKey] }}>{s > 0 ? "+" : ""}{s} pts</div>
           </div>
 
           <button className="gen-btn" onClick={generate} disabled={loading}>
@@ -199,15 +171,16 @@ export default function App() {
           {result && revealed && (
             <div className="result">
               <div className="result-eyebrow">Your Future in 30 Days</div>
+              
               <div className="result-headline">
-                {result.outcome.headline[0]}
-                <span className="outline">{result.outcome.headline[1]}</span>
+                {result.outcome.headline[0]} <span className="outline">{result.outcome.headline[1]}</span>
               </div>
+
+              <TrajectoryChart score={result.s} />
 
               <div className="traits">
                 {result.outcome.traits.map((t, i) => (
-                  <div key={t} className={`chip ${result.outcome.type}`}
-                    style={{ animationDelay: `${i * 0.07}s` }}>{t}</div>
+                  <div key={t} className={`chip ${result.outcome.type}`} style={{ animationDelay: `${i * 0.07}s` }}>{t}</div>
                 ))}
               </div>
 
@@ -227,10 +200,8 @@ export default function App() {
 
               <div className="intervention-section">
                  <div className="section-heading">Course Correction</div>
-                 
-                 {/* NEW: Butterfly Effect Component */}
                  <ButterflyEffect habits={{ sleep, screenTime: screen, studyHours: study, exercise, mood, originalScore: result.s }} />
-
+                 <AudioMessage />
                  <BreathingExercise />
                  <Journal />
               </div>
@@ -240,9 +211,7 @@ export default function App() {
       </div>
 
       <div className="footer">
-        <div className="footer-msg">
-          <span>Small changes today</span> can reshape your entire future.
-        </div>
+        <div className="footer-msg"><span>Small changes today</span> can reshape your entire future.</div>
         <div className="footer-mono">FutureYou™ — Habit Forecaster</div>
       </div>
     </>
